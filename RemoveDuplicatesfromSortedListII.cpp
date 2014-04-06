@@ -10,13 +10,11 @@ class Solution {
 public:
     ListNode *insert(ListNode *target, ListNode &head, ListNode *tail)
     {
-        if(!head.next) {
+        if(!head.next)
             head.next = target;
-            tail = target;
-        } else {
+        else
             tail->next = target;
-            tail = target;
-        }
+        tail = target;
         tail->next = NULL;
         return tail;
     }
@@ -27,18 +25,12 @@ public:
         while(pre) {
             while(cur && cur->val == pre->val)
                 cur = cur->next;
-            if(cur == pre->next) { //we didn't move
+            if(cur == pre->next) 
                 result_tail = insert(pre, result_head, result_tail);
-                pre = cur;
-                if(cur)
-                    cur = cur->next;
-            } else {
-                pre = cur;
-                if(cur)
-                    cur = cur->next;
-            }
+            pre = cur;
+            if(cur)
+                cur = cur->next;
         }
-
         return result_head.next;
     }
 };
