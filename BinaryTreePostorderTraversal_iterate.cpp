@@ -14,24 +14,18 @@ public:
         if(!root)
             return res;
         stack<TreeNode *> S;
-        TreeNode *cur = root;
         S.push(root);
+        TreeNode *cur;
         while(!S.empty()) {
             cur = S.top();
-            if(!cur->left && !cur->right) {
-                res.push_back(cur->val);
-                S.pop();
-            } else {
-                if(cur->right) {
-                    S.push(cur->right);
-                    cur->right = NULL;
-                }
-                if(cur->left) {
-                    S.push(cur->left);
-                    cur->left = NULL;
-                }
-            }
+            S.pop();
+            res.push_back(cur->val);
+            if(cur->left)
+                S.push(cur->left);
+            if(cur->right)
+                S.push(cur->right);
         }
+        reverse(res.begin(), res.end());
         return res;
     }
 };
