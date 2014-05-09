@@ -1,41 +1,37 @@
 class Solution {
 public:
-    void format(string &str)
+    void format(string &s)
     {
-        string tmp;
-        int start =0, end = str.size() - 1;
-        while(start < str.size() && str[start] == ' ')
-            start++;
-        while(end >= 0 && str[end] == ' ')
-            end--;
-        if(start <= end)
-            tmp.insert(tmp.begin(), str.begin() + start, str.begin() + end + 1);
+        string res;
+        int slow = 0, fast = s.size() - 1;
+        while(slow < s.size() && s[slow] == ' ' )
+            slow++;
+        while(fast >= 0 && s[fast] == ' ' )
+            fast--;
+        if(slow <= fast)
+            res.insert(res.begin(), s.begin() + slow, s.begin() + fast + 1);
         else
-            tmp = "";
-        str = tmp;
+            res = "";
+        s = res;
     }
     void reverseWords(string &s) {
-        string res;
         if(s.empty())
             return;
+        string res;
         format(s);
-        if(s == "") {
-            s.clear();
-            return;
-        }
-        int slow = 0, fast = 0;
+        if(s == "")
+            return ;
+        int fast = 0, slow = 0;
         while(slow < s.size()) {
             while(fast < s.size() && s[fast] != ' ')
                 fast++;
             res.insert(res.begin(), s.begin() + slow, s.begin() + fast);
-            if(fast >= s.size())
-                break;
             while(fast < s.size() && s[fast] == ' ')
                 fast++;
             slow = fast;
             res.insert(res.begin(), ' ');
         }
         s = res;
-        s.erase(s.end() - 1, s.end() - 1);
+        s.erase(s.begin(), s.begin() + 1);
     }
 };
