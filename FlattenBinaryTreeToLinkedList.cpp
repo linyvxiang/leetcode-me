@@ -1,26 +1,35 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
 class Solution {
 public:
-    void change_tree(TreeNode *root, TreeNode **prev) {
+   void do_flatten(TreeNode *root, TreeNode **prev)
+   {
         if(!root)
             return ;
         TreeNode *left = root->left;
         TreeNode *right = root->right;
-        if(*prev) {
+        if(!(*prev))
+            *prev = root;
+        else {
             (*prev)->right = root;
             (*prev)->left = NULL;
+            *prev = root;
         }
-        *prev = root;
-        if(left)
-            change_tree(left, prev);
-        if(right)
-            change_tree(right, prev);
-    }
+        do_flatten(left, prev);
+        do_flatten(right, prev);
+        
+   }
     void flatten(TreeNode *root) {
-        // IMPORTANT: Please reset any member data you declared, as
-        // the same Solution instance will be reused for each test case.
-        TreeNode **prev = (TreeNode **)malloc(sizeof(TreeNode *));
-        *prev = NULL;
-        change_tree(root, prev);
-        free(prev);
+        TreeNode *prev = NULL;
+        if(!root)
+            return;
+        do_flatten(root, &prev);
     }
 };
