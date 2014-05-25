@@ -9,29 +9,22 @@
  */
 class Solution {
 public:
-    int subtree_sum(TreeNode *root, int cur_sum) {
-        if(!root)
-            return cur_sum;
-        cur_sum = cur_sum * 10 + root->val;
-        if(root->left && root->right)
-            return subtree_sum(root->left, cur_sum) + subtree_sum(root->right, cur_sum);
-        if(root->left && !root->right)
-            return subtree_sum(root->left, cur_sum);
-        if(root->right && !root->left)
-            return subtree_sum(root->right, cur_sum);
-        return cur_sum;
+    void do_calc_sum(TreeNode *root, int &sum, int cur_num)
+    {
+        cur_num = cur_num * 10 + root->val;
+        if(root->left == NULL && root->right == NULL)
+            sum += cur_num;
+        if(root->left)
+            do_calc_sum(root->left, sum, cur_num);
+        if(root->right)
+            do_calc_sum(root->right, sum, cur_num);
     }
     int sumNumbers(TreeNode *root) {
-        // IMPORTANT: Please reset any member data you declared, as
-        // the same Solution instance will be reused for each test case.
-        if(!root) 
+        int sum = 0;
+        int cur_num = 0;
+        if(!root)
             return 0;
-        if(root->left && root->right)
-            return subtree_sum(root->left, root->val) + subtree_sum(root->right, root->val);
-        else if(root->left && !root->right)
-            return subtree_sum(root->left, root->val);
-        else if(root->right && !root->left)
-            return subtree_sum(root->right, root->val);
-        return root->val;
+        do_calc_sum(root, sum, cur_num);
+        return sum;
     }
 };
