@@ -26,6 +26,6 @@ private:
         if(l > 0)   sum += l;
         if(r > 0)   sum += r;
         max_sum = max(max_sum, sum);
-        return max(r, l) > 0 ? max(r, l) + root->val : root->val;
+        return max(root->val, max(root->val + l, root->val + r)); //ÕâÀïÒª¸ø¸¸½áµãÌá¹©Ò»¸ö"Á¬½Ó" ,ËùÒÔÖ»¿ÉÄÜÑ¡×ó×ÓÊ÷+root»òÕßÓÒ×ÓÊ÷+root»òÕßÖ»ÓÐroot£¬¶ø²»ÄÓ¦¸ÃÐÎ³ÉÒ»¸öÍêÕûµÄÂ·¾¶ 
     }
 };
