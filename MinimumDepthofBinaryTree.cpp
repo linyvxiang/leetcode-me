@@ -10,20 +10,15 @@
 class Solution {
 public:
     int minDepth(TreeNode *root) {
-        // Note: The Solution object is instantiated only once and is reused by each test case.
         if(!root)
             return 0;
-        if(root->left == NULL && root->right == NULL)
+        if(!root->left && !root->right)
             return 1;
-            
-        int left_min = INT_MAX;
+        int l_height = INT_MAX, r_height = INT_MAX;
         if(root->left)
-            left_min = minDepth(root->left) + 1;
-        int right_min = INT_MAX;
+            l_height = 1 + minDepth(root->left);
         if(root->right)
-            right_min = minDepth(root->right) + 1;
-        
-        return min(left_min, right_min);
-        
+            r_height = 1 + minDepth(root->right);
+        return min(l_height, r_height);
     }
 };
