@@ -1,37 +1,33 @@
 class Solution {
 public:
-    int find_pos(int A[], int n, int target)
-    {
-        int low = 0, high = n;
-        int mid;
-        while(low <= high) {
-            mid = (low + high) >> 1;
-            if(A[mid] == target)
-                return mid;
-            if(A[mid] > target)
-                high = mid -1;
-            else
-                low = mid + 1;
-        }
-        return -1;
-    }
     vector<int> searchRange(int A[], int n, int target) {
-        // IMPORTANT: Please reset any member data you declared, as
-        // the same Solution instance will be reused for each test case.
-        int pos = find_pos(A, n, target);
-        int left = pos, right = pos;
-        vector<int> V;
-        if(pos == -1) {
-            V.push_back(-1);
-            V.push_back(-1);
-            return move(V);
+        int left_bound = -1, right_bound = -1;
+        find_bound(A, 0, n - 1, target, left_bound, 0);
+        find_bound(A, 0, n - 1, target, right_bound, 1);
+        vector<int> res;
+        if(left_bound > right_bound)
+            swap(left_bound, right_bound);
+        res.push_back(left_bound);
+        res.push_back(right_bound);
+        return res;
+    }
+private:
+    void find_bound(int A[], int start, int end, int target, int &bound, int direc)
+    {
+        if(start > end)
+            return;
+        int mid = (start + end) >> 1;
+        if(A[mid] == target) {
+            bound = mid;
+            if(direc == 0)
+                find_bound(A, mid + 1, end, target, bound, direc);
+            else
+                find_bound(A, start, mid - 1, target, bound, direc);
+        } else {
+            if(A[mid] > target)
+                find_bound(A, start, mid - 1, target, bound, direc);
+            else 
+                find_bound(A, mid + 1, end, target, bound, direc);
         }
-        while(A[left] == target && left >= 0)
-            left--;
-        while(A[right] == target && right < n)
-            right++;
-        V.push_back(left + 1);
-        V.push_back(right - 1);
-        return move(V);
     }
 };
