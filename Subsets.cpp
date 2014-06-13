@@ -8,15 +8,14 @@ public:
         return res;
     }
 private:
-    void generate_subsets(vector<int> &S, int cur_pos, vector<int> &tmp, vector<vector<int> > &res)
+    void generate_subsets(vector<int> &S, int cur_pos, vector<int> &tmp, vector<vector<int>> &res)
     {
-        if(cur_pos == S.size()) {
-            res.push_back(tmp);
-            return;
+        res.push_back(tmp);
+        int start;
+        for(start = cur_pos; start < S.size(); start++) {
+            tmp.push_back(S[start]);
+            generate_subsets(S, start + 1, tmp, res);
+            tmp.pop_back();
         }
-        tmp.push_back(S[cur_pos]);
-        generate_subsets(S, cur_pos + 1, tmp, res);
-        tmp.pop_back();
-        generate_subsets(S, cur_pos + 1, tmp, res);
     }
 };
