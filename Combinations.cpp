@@ -10,15 +10,15 @@ private:
     void generate_combines(int cur_pos, int numbers, int n, int k,
                             vector<int> &tmp, vector<vector<int> > &res)
     {
-        if(numbers > k || cur_pos > n + 1)
-            return ;
+
         if(numbers == k) {
             res.push_back(tmp);
-            return ;
         }
-        tmp.push_back(cur_pos);
-        generate_combines(cur_pos + 1, numbers + 1, n, k, tmp, res);
-        tmp.pop_back();
-        generate_combines(cur_pos + 1, numbers, n, k, tmp, res);
-    }
+        int start = cur_pos;
+        for(start = cur_pos; start <= n; start++) {
+            tmp.push_back(start);
+            generate_combines(start + 1, numbers + 1, n, k, tmp, res);
+            tmp.pop_back();
+        }
+    }    
 };
