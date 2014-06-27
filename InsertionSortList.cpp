@@ -23,12 +23,12 @@ public:
                 pre = new_pos;
                 new_pos = new_pos->next;
             }
-            // insert between pre and new_pos
             if(new_pos == cur) {
                 cur_prev = cur;
                 cur= cur->next;
                 continue;
             }
+             // insert between pre and new_pos
             cur_prev->next = cur->next;
             cur->next = pre->next;
             pre->next = cur;
