@@ -9,49 +9,32 @@
 class Solution {
 public:
     void reorderList(ListNode *head) {
-        ListNode *reverse_start = find_mid_node(head);
-        reverse_start = reverse_list(reverse_start);
-        ListNode HEAD(0), *cur = head;
-        HEAD.next = reverse_start;
-        while(HEAD.next) {
-            ListNode *tmp = HEAD.next;
-            HEAD.next = tmp->next;
-            tmp->next = cur->next;
-            cur->next = tmp;
-            cur = tmp->next;
+        if(!head || !head->next)
+            return ;
+        
+        ListNode *cur = head;
+        while(cur) {
+           ListNode *tail = find_tail(cur);
+           if(!tail || tail == cur)
+               break;
+           tail->next = cur->next;
+           cur->next = tail;
+           cur = tail->next;
         }
     }
 private:
-    ListNode *find_mid_node(ListNode *start)
+    ListNode *find_tail(ListNode *start)
     {
-        int len = 0, pos = 0;
-        ListNode *cur = start;
-        while(cur) {
-            len++;
-            cur = cur->next;
-        }
-        pos = (len + 1) >> 1;
-        cur = start;
-        ListNode *pre = NULL;
-        while(pos--) {
-            pre = cur;
-            cur = cur->next;
-        }
-        if(pre)
-            pre->next = NULL;
-        return cur;
-    }
-    ListNode *reverse_list(ListNode *head)
-    {
-        ListNode HEAD(0);
-        HEAD.next = NULL;
-        ListNode *cur = head;
-        while(cur) {
-            ListNode *tmp = cur->next;
-            cur->next = HEAD.next;
-            HEAD.next = cur;
-            cur = tmp;
-        }
-        return HEAD.next;
+      ListNode *cur = start;
+      ListNode *pre = NULL, *ppre = NULL;
+      while(cur) {
+          ppre = pre;
+          pre = cur;
+          cur = cur->next;
+      }
+      // pre is the tail;
+      if(ppre)
+          ppre->next = NULL;
+      return pre;
     }
 };
