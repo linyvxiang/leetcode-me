@@ -1,66 +1,35 @@
-#include <pthread.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <math.h>
-#include <time.h>
-#include <stack>
-#include <vector>
-#include <string>
-#include <sys/wait.h>
-#include <string>
-#include <unordered_set>
-#include <iterator>
-#include <vector>
-using namespace std;
-
 class Solution {
 public:
     bool wordBreak(string s, vector<string> &dict) {
-        return do_judge(0, s, dict);
-    }
-private:
-    bool do_judge(int cur_pos, const string& s, const vector<string> &dict)
-    {
-        if(cur_pos >= s.size())
-            return true;
-        int i, len = s.size();
-        for(i = 0; i < dict.size(); i++) {
-            if(cur_pos + dict[i].size() > len)
-                continue;
-            if(check(cur_pos, s, dict[i])) {
-                bool temp =  do_judge(cur_pos + dict[i].size(), s, dict);
-                if(temp)
-                    return true;
+        bool res_table[s.size()];
+        int i;
+        res_table[0] = false;
+        for(i = 0; i < s.size(); i++) {
+            int j = 0;
+            res_table[i] = false;
+            for(j = 0; j < dict.size(); j++) {
+                if(check(res_table, i, s, dict[j])) {
+                    res_table[i] = true;
+                    break;
+                }
             }
         }
-        return false;
-   }
-   bool check(int cur_pos, const string &s, const string &tem)
-   {
-       int i;
-       for(i = 0; i < tem.size(); i++)
-            if(s[cur_pos + i] != tem[i])
+        for(i = 0; i < s.size(); i++)
+            printf("%d\n", res_table[i]);
+        return res_table[s.size() - 1];
+    }
+private:
+    bool check(bool table[], int cur_pos, const string &s, const string &tmp)
+    {
+        int t = cur_pos - tmp.size();
+        if(t < -1)
+            return false;
+        if(t > -1 && table[cur_pos - tmp.size()] == false)
+            return false;
+        int i;
+        for(i = 0; i < tmp.size(); i++)
+            if(s[cur_pos - tmp.size() + 1 + i] != tmp[i])
                 return false;
-
-       return true;
-   }
+        return true;
+    }
 };
-
-int main()
-{
-    Solution s;
-    vector<string> dict;
-    dict.push_back("a");
-    dict.push_back("b");
-    bool res;
-    res = s.wordBreak("ababaabba", dict);
-    if(res)
-        printf("yes\n");
-    else
-        printf("no\n");
-    return 0;
-}
