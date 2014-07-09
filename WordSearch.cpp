@@ -1,68 +1,30 @@
 class Solution {
 public:
-    bool exist(vector<vector<char> > &board, string word) {
-        int row = board.size();
-        int column = board[0].size();
-        bool *flag = (bool *)malloc(sizeof(bool));
-        memset(flag, false, sizeof(flag));
-        int i, j;
-        for(i = 0; i < row; i++) {
-            for(j = 0; j < column; j++) {
-                if(board[i][j] == word[0] && !check_visit(i, j, flag, board)) {
-                    memset(flag, false, sizeof(flag));
-                    mark(i, j, flag, board);
-                    bool res = do_search_word(i, j, 1, flag, board, word);
-                    if(res)
-                        return true;
-                    unmark(i, j, flag, board);
-                }
-            }
-        }
-        free(flag);
-        return false;
-    }
+	bool exist(vector<vector<char> > &board, string word) {
+		const int m = board.size();
+		const int n = board[0].size();
+		vector<vector<bool> > visited(m, vector<bool>(n, false));
+		for (int i = 0; i < m; ++i)
+			for (int j = 0; j < n; ++j)
+				if (dfs(board, word, 0, i, j, visited))
+					return true;
+				return false;
+	}
 private:
-    bool check_visit(int x, int y, bool *flag, vector<vector<char> > &board)
-    {
-        return flag[x * board[0].size() + y];
-    }
-    void mark(int x, int y, bool *flag, vector<vector<char> > &board)
-    {
-        flag[x * board[0].size() + y] = true;
-    }
-    void unmark(int x, int y, bool *flag, vector<vector<char> > &board)
-    {
-        flag[x * board[0].size() + y] = false;
-    }
-    bool check_out(int x, int y, vector<vector<char> > &board)
-    {
-        if(x < 0 || x >= board.size()
-            ||  y < 0 || y >= board[0].size())
-            return true;
-
-        return false;
-    }
-    bool do_search_word(int cur_x, int cur_y, int cur_pos, bool *flag, 
-                        vector<vector<char> > &board, string &word)
-    {
-        if(cur_pos == word.size())
-            return true;
-        int dir[4][2] = { {-1, 0}, {0, -1}, {0, 1}, {1, 0}};
-        int i;
-        for(i = 0; i < 4; i++) {
-            int x = cur_x + dir[i][0], y = cur_y + dir[i][1];
-            if(check_out(x, y, board))
-                continue;
-            if(board[x][y] == word[cur_pos] && !check_visit(x, y, flag, board)) {
-                mark(x, y, flag, board);
-                bool res = do_search_word(x, y, cur_pos + 1, flag, board, word);
-                unmark(x, y, flag, board);
-                if(res)
-                    return true;
-            }
-        }
-
-        return false;
-    }
-
-};
+	static bool dfs(const vector<vector<char> > &board, const string &word,
+		int index, int x, int y, vector<vector<bool> > &visited) {
+		if (index == word.size())
+			return true; // 收敛条件
+		if (x < 0 || y < 0 || x >= board.size() || y >= board[0].size())
+			return false; // 越界，终止条件
+		if (visited[x][y]) return false; // 已经访问过，剪枝
+		if (board[x][y] != word[index]) return false; // 不相等，剪枝
+		visited[x][y] = true;
+		bool ret = dfs(board, word, index + 1, x - 1, y, visited) || // 上
+			dfs(board, word, index + 1, x + 1, y, visited) || // 下
+			dfs(board, word, index + 1, x, y - 1, visited) || // 左
+			dfs(board, word, index + 1, x, y + 1, visited); // 右
+		visited[x][y] = false;
+		return ret;
+	}
+}
