@@ -8,50 +8,27 @@
  * };
  */
 class Solution {
+private:
+    static bool comp(Interval a, Interval b)
+    {
+        return a.start < b.start;
+    }
 public:
     vector<Interval> insert(vector<Interval> &intervals, Interval newInterval) {
-        int cur_pos = 0, pre_pos = -1;
-        for(; cur_pos < intervals.size(); cur_pos++) {
-            if(intervals[cur_pos].start >= newInterval.start)
-                break;
-            pre_pos = cur_pos;
+        //在原始数组上操作
+        vector<Interval>::iterator ite = lower_bound(intervals.begin(),intervals.end(), newInterval, comp);//按照start值二分查找
+        if(ite != intervals.begin() && newInterval.start <= (ite-1)->end)//ite的上一个区间也可能参与合并
+        {
+            ite--;
+            //合并后新区间的起点只和第一个合并的区间有关，因为数组时按区间起点有序的
+            newInterval.start = min(newInterval.start, ite->start);
         }
-        
-        if(pre_pos >= 0 && cur_pos != intervals.size()) { //find a pos in the middle
-            if(intervals[pre_pos].end > newInterval.start) {
-                intervals[pre_pos].end = max(newInterval.end, intervals[pre_pos].end);
-                while(check_merge(pre_pos, intervals))
-                    do_merge(pre_pos, intervals);
-            } else if(intervals[pre_pos].end < newInterval.start) {
-                intervals.insert(intervals.begin() + pre_pos, newInterval);
-                while(check_merge(pre_pos + 1, intervals))
-                    do_merge(pre_pos + 1, intervals);
-            }
-
-        } else if(cur_pos == 0) {
-            intervals.insert(intervals.begin(), newInterval);
-            while(check_merge(0, intervals))
-                do_merge(0, intervals);
-        } else if(cur_pos == intervals.size()) {
-            intervals.insert(intervals.end(), newInterval);
-            while(intervals.size() > 1 && check_merge(intervals.size() - 2, intervals))
-                do_merge(intervals.size() - 2, intervals);
-        }
-        return intervals;
-    }
-private:
-    bool check_merge(int cp, vector<Interval> &intervals)
-    {
-        return cp != intervals.size() - 1 &&
-            intervals[cp].end >= intervals[cp + 1].start;
-    }
-    void do_merge(int cp, vector<Interval> &intervals)
-    {
-        if(intervals[cp].end <= intervals[cp + 1].end) {
-            intervals[cp].end = intervals[cp + 1].end;
-            intervals.erase(intervals.begin() + cp + 1);
-        } else {
-            intervals.erase(intervals.begin() + cp + 1);
-        }
+        vector<Interval>::iterator eraseBegin = ite;
+        for(; ite != intervals.end() && newInterval.end >= ite->start; ite++)
+            if(newInterval.end < ite->end)newInterval.end = ite->end;//合并后的新区间存放于newInterval
+			
+			ite = intervals.erase(eraseBegin, ite);//[eraseBegin, ite)是合并时应该删掉的区间
+			intervals.insert(ite, newInterval);//插入合并后的区间
+			return intervals;
     }
 };
