@@ -11,18 +11,17 @@ public:
     ListNode *deleteDuplicates(ListNode *head) {
         if(!head)
             return head;
-        ListNode *result = head, *result_tail = head, *cur_pos = head->next;
-        while(cur_pos) {
-            while(cur_pos && cur_pos->val == result_tail->val) {
-                cur_pos = cur_pos->next;
-            }// ok, now cur_pos->val != result_vail->val, so a new elemnet is to be added
-            if(!cur_pos)
-                break;
-            result_tail->next = cur_pos;
-            result_tail = cur_pos;
-            cur_pos = cur_pos->next;
+        ListNode *cur = head;
+        while(cur) {
+            ListNode *front = cur->next;
+            while(front && front->val == cur->val) {
+                ListNode *tmp = front->next;
+                free(front);
+                cur->next = tmp;
+                front = tmp;
+            }
+            cur = cur->next;
         }
-        result_tail->next = NULL;
-        return result;
+        return head;
     }
 };
