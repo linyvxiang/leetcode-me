@@ -8,30 +8,39 @@
  */
 class Solution {
 public:
- ListNode *reverseBetween(ListNode *head, int m, int n) {
-		ListNode *HEAD = (ListNode *)malloc(sizeof(struct ListNode));
-		HEAD->next = head;
-        ListNode *pre = HEAD;
-        if(!head || m == n)
+    ListNode *reverseBetween(ListNode *head, int m, int n) {
+        if(!head)
             return head;
-        int cur_pos = 1;
-        while(cur_pos < m) {
-            pre = pre->next;
-            cur_pos++;
-        }//now the pre->next is at the m pos
-        ListNode *pos_m = pre->next, *pos_n = pre->next;
-        while(cur_pos < n) {
-            pos_n = pos_n->next;
-            cur_pos++;
-        }//now the pos_n->next is the tail
-        while(pos_m != pos_n) {
-            ListNode *tmp = pos_m->next;
-            pos_m->next = pos_n->next;
-            pos_n->next = pos_m;
-            pos_m = tmp;
-        }
-        pre->next = pos_n;
-        return HEAD->next;
+        ListNode HEAD(0);
+        HEAD.next = head;
+        ListNode *front = find_pos(&HEAD, m - 1);
+        ListNode *reverse_end = find_pos(&HEAD, n);
+        ListNode *end = reverse_end->next;
+        reverse(front->next, reverse_end);
+        front->next->next = end;
+        front->next = reverse_end;
+        return HEAD.next;
     }
-    
+
+private:
+    ListNode *find_pos(ListNode *head, int pos)
+    {
+        ListNode *res = head;
+        while(pos--)
+            res = res->next;
+        return res;
+    }
+
+    void reverse(ListNode *start, ListNode *end)
+    {
+        ListNode HEAD(0), *cur = start;
+        HEAD.next = NULL;
+        while(cur != end) {
+            ListNode *temp = cur->next;
+            cur->next = HEAD.next;
+            HEAD.next = cur;
+            cur = temp;
+        }
+        end->next = HEAD.next;
+    }
 };
