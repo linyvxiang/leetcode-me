@@ -9,41 +9,24 @@
 class Solution {
 public:
     ListNode *rotateRight(ListNode *head, int k) {
-        ListNode *fast = head;
-        ListNode *slow = head;
-        ListNode *__head = (ListNode *)malloc(sizeof(ListNode));
-        __head->next = head;
-        int step = 0;
-        if(!head)
-            return NULL;
-
-        int len = 0;
-        while(slow) {
+        if(!head || !head->next || !k)
+            return head;
+            
+        int len = 1, cur_pos;
+        ListNode *end = head, *new_end = head, *new_head;
+        while(end->next) {
             len++;
-            slow = slow->next;
+            end = end->next;
         }
-        if(len == 1)
+        k = k % len;
+        if(!k)
             return head;
-        if(k > len)
-            k = k % len;
-        if(k == 0)
-            return head;
-        slow = head;
-        for(; step < k; step++) {
-            fast = fast->next;
-            if(!fast)
-                return head;
-        }
-
-        while(fast->next) {
-            fast = fast->next;
-            slow = slow->next;
-        }
-        //now break it and reverse
-        ListNode *tmp = __head->next;
-        __head->next = slow->next;
-        fast->next = tmp;
-        slow->next = NULL;
-        return __head->next;
+        for(cur_pos = 0; cur_pos < len - k - 1; cur_pos++)
+            new_end = new_end->next;
+            
+        new_head = new_end->next;
+        new_end->next = NULL;
+        end->next = head;
+        return new_head;
     }
 };
