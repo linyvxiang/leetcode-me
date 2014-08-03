@@ -8,29 +8,28 @@
  */
 class Solution {
 public:
-    ListNode *insert(ListNode *target, ListNode &head, ListNode *tail)
+    ListNode *deleteDuplicates(ListNode *head) 
     {
-        if(!head.next)
-            head.next = target;
-        else
-            tail->next = target;
-        tail = target;
-        tail->next = NULL;
-        return tail;
-    }
-    ListNode *deleteDuplicates(ListNode *head) {
-        if(!head || !head->next)
-            return head;
-        ListNode result_head(0), *result_tail, *pre = head, *cur = head->next;
-        while(pre) {
-            while(cur && cur->val == pre->val)
+        ListNode HEAD(0);
+        HEAD.next = head;
+        ListNode *pre = &HEAD, *cur = head;
+        while(cur) {
+            ListNode *front = cur;
+            while(front && front->val == cur->val)
+                front = front->next;
+            if(front == cur->next) {
+                pre = cur;
                 cur = cur->next;
-            if(cur == pre->next) 
-                result_tail = insert(pre, result_head, result_tail);
-            pre = cur;
-            if(cur)
-                cur = cur->next;
+            } else {
+                pre->next = front;
+                while(cur && cur->next != front) {
+                    ListNode *tmp = cur->next;
+                    free(cur);
+                    cur = tmp;
+                }
+                cur = front;
+            }
         }
-        return result_head.next;
+        return HEAD.next;
     }
 };
