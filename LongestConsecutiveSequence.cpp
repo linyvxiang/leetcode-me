@@ -1,32 +1,29 @@
 class Solution {
 public:
-
     int longestConsecutive(vector<int> &num) {
-        unordered_map<int, bool> occur;
-        int i;
-        int len = num.size();
-        for(i = 0; i < len; i++)
-            occur[num[i]] = false;
-            
-        int longest = 0;
-        
-        for(i = 0; i < len; i ++) {
-            if(occur[num[i]])
-                continue;
+        if(num.size() == 0)
+            return 0;
+        unordered_map<int, bool> used;
+        for(auto i : num)
+            used[i] = false;
+        int max_len = 0;
+        for(auto i : num) {            
+            if(used[i])
+                continue;              
+    
             int length = 1;
-            occur[num[i]] = true;
-            int j;
-            for(j = num[i] + 1; occur.find(j) != occur.end(); j++) {
-                occur[j] = true;
+            used[i] = true;
+            for(int j = i + 1; used.find(j) != used.end(); j++) {
+                used[j] = true;
                 length++;
             }
-            for(j = num[i] - 1; occur.find(j) != occur.end(); j--) {
-                occur[j] = true;
+            for(int j = i - 1; used.find(j) != used.end(); j--) {
+                used[j] = true;
                 length++;
-            } 
-            if(length > longest)
-                longest = length;
+            }
+
+            max_len = max(length, max_len);
         }
-        return longest;
+        return max_len;
     }
 };
