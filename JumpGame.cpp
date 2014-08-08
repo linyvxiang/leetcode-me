@@ -11,6 +11,5 @@ public:
             if(max_len >= n - 1)
                 return true;
         }
-        return false;
     }
 };
