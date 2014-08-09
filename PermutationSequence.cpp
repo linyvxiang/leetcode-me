@@ -1,38 +1,28 @@
 class Solution {
 public:
-  int fac(int n)
-  {
-      if(n == 0 || n == 1)
-        return 1;
-      int i, res = 1;
-      for(i = 2; i <= n; i++)
-        res *= i;
-      return res;
-  }
-  string do_slove(string str, int n, int k)
-  {
-      string res;
-      string temp(str);
-      int base = fac(n - 1);
-      --k;
-      int i;
-      for(i = n - 1; i > 0; i--) {
-          auto pos = next(temp.begin(), k / base);
-          res.push_back(*pos);
-          temp.erase(pos);
-          k = k % base;
-          base = base / i;
-      }
-      res.push_back(temp[0]);
-      return res;
-  }
-  string getPermutation(int n, int k) {
-        string res(n, '0');
-        int i;
-        for(i = 0 ;i < n; i++) {
-            res[i] += (i + 1);
+    string getPermutation(int n, int k) {
+        string res;
+        if(!k)
+            return res;
+        int cur_len;
+        vector<char> numbers;
+        for(cur_len = 0; cur_len <= n; cur_len++)
+            numbers.push_back('1' + cur_len);
+        cur_len = n;
+        k--;
+        while(cur_len--) {
+            int pos = k / fac(cur_len);
+            res += numbers[pos];
+            numbers.erase(numbers.begin() + pos);
+            k %= fac(cur_len);
         }
-       string fin =  do_slove(res, n, k);
-       return fin;
-  }
+        return res;
+    }
+private:
+    int fac(int n)
+    {
+        if(n == 0 || n == 1)
+            return 1;
+        return n * fac(n - 1);
+    }
 };
