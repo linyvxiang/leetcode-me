@@ -7,40 +7,36 @@
  * };
  */
 class Solution {
-public:
-    void connect(TreeLinkNode *root) {
-        if(!root)
-            return ;
-        queue<TreeLinkNode *> Q;
-        int cur_count = 1, next_count = 0;
-        Q.push(root);
-        TreeLinkNode *prev = NULL;
-        while(!Q.empty()) {
-            TreeLinkNode *tmp = Q.front();
-            if(tmp->left) {
-                Q.push(tmp->left);
-                next_count++;
-            }
-            if(tmp->right) {
-                Q.push(tmp->right);
-                next_count++;
-            }
-            Q.pop();
-            cur_count--;
-            
-            if(!prev) {
-                prev = tmp;
-            } else {
-                prev->next = tmp;
-                prev = tmp;
-            }
-            
-            if(cur_count == 0) {
-                tmp->next = NULL;
-                cur_count = next_count;
-                next_count = 0;
-                prev = NULL;
-            }
-        }
-    }
+	public:
+		void connect(TreeLinkNode *root) {
+			if(!root)
+				return;
+			queue<TreeLinkNode *> q;
+			TreeLinkNode *prev = NULL, *cur = root;
+			int cur_level_len = 1, next_level_len = 0;
+			q.push(root);
+			while(!q.empty()) {
+				if((q.front())->left) {
+					q.push((q.front())->left);
+					next_level_len++;
+				}
+				if((q.front()->right)) {
+					q.push((q.front())->right);
+					next_level_len++;
+				}
+
+				if(prev)
+					prev->next = q.front();
+				cur_level_len--;
+				if(!cur_level_len) {
+					q.front()->next = NULL;
+					cur_level_len = next_level_len;
+					next_level_len = 0;
+					prev  = NULL;
+				} else {
+					prev = q.front();
+				}
+				q.pop();
+			}	
+		}
 };
