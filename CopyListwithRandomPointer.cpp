@@ -7,38 +7,34 @@
  * };
  */
 class Solution {
-public:
-    RandomListNode *copyRandomList(RandomListNode *head) {
-        if(!head)
-            return head;
-        RandomListNode SRC_HEAD(0), DST_HEAD(0), *src_cur = head, *dst_cur;
-        dst_cur = &DST_HEAD;
-        SRC_HEAD.next = head;
-        while(src_cur) {
-            RandomListNode *tmp = (RandomListNode *)malloc(sizeof(struct RandomListNode));
-            tmp->next = src_cur->next;
-            tmp->random = NULL;
-            tmp->label = src_cur->label;
-            src_cur->next = tmp;
-            src_cur = tmp->next;
-        }
-        src_cur = SRC_HEAD.next;
-        DST_HEAD.next = head->next;
-        dst_cur = &DST_HEAD;
-        while(src_cur) {
-            if(src_cur->random) {
-                src_cur->next->random = src_cur->random->next;
-            }
-            src_cur = src_cur->next->next;
-        }
-        
-        src_cur = SRC_HEAD.next;
-        while(src_cur) {
-            dst_cur->next = src_cur->next;
-            dst_cur = dst_cur->next;
-            src_cur->next = src_cur->next->next;
-            src_cur = src_cur->next;
-        }
-        return DST_HEAD.next;
-    }
+	public:
+		RandomListNode *copyRandomList(RandomListNode *head) {
+			RandomListNode *cur = head;
+			while(cur) {
+				RandomListNode *tmp = (RandomListNode *)malloc(sizeof(struct RandomListNode));
+				tmp->label = cur->label;
+				tmp->next = cur->next;
+				tmp->random = NULL;
+				cur->next = tmp;
+				cur = tmp->next;
+			}
+
+			cur = head;
+			while(cur) {
+				if(cur->random) {
+					cur->next->random = cur->random->next;
+				}
+				cur = cur->next->next;
+			}
+			RandomListNode RES_HEAD(0), *tail = &RES_HEAD;
+			cur = head;
+			while(cur) {
+				tail->next = cur->next;
+				tail = cur->next;
+				cur->next = cur->next->next;
+				cur = cur->next;
+			}
+			tail->next = NULL;
+			return RES_HEAD.next;
+		}
 };
