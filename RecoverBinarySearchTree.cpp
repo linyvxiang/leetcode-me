@@ -7,60 +7,48 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
-/**
- * Definition for binary tree
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
 class Solution {
 public:
-    void check(TreeNode *prev, TreeNode *cur, TreeNode **first, TreeNode **second)
-    {
-        if(prev->val > cur->val) {
-            if(!(*first)) {
-                *first = prev;
-                *second = cur;
-            } else {
-                *second = cur;
-            }
-        }
-    }
     void recoverTree(TreeNode *root) {
-        if(!root)
-            return ;
-        TreeNode *cur = root;
-        TreeNode *p = NULL;
-        TreeNode *first = NULL, *second = NULL;
+        TreeNode *cur = root, *first_node = NULL, *second_node = NULL, *pre = NULL;
         while(cur) {
             if(!cur->left) {
-                if(!p)
-                    p = cur;
-                else
-                    check(p, cur, &first, &second);
-                p = cur;
+                if(pre && pre->val > cur->val) {
+                    if(!first_node) {
+                        first_node = pre;
+                        second_node = cur;
+                    } else {
+                        second_node = cur;
+                    }
+                }
+                pre = cur;
                 cur = cur->right;
             } else {
-                TreeNode *prev = cur->left;
-                while(prev->right && prev->right != cur)
-                    prev = prev->right;
-                if(!prev->right) {
-                    prev->right = cur;
+                TreeNode *pre_node = cur->left;
+                while(pre_node->right && pre_node->right != cur)
+                    pre_node = pre_node->right;
+                if(pre_node->right == NULL) {
+                    pre_node->right = cur;
                     cur = cur->left;
                 } else {
-                    prev->right = NULL;
-                    if(!p)
-                        p = cur;
-                    else
-                        check(p ,cur, &first, &second);
-                    p = cur;
+                    pre_node->right = NULL;
+                    if(pre && pre->val > cur->val) {
+                        if(!first_node) {
+                            first_node = pre;
+                            second_node = cur;
+                        } else {
+                            second_node = cur;
+                        }
+                    }
+                    pre = cur;
                     cur = cur->right;
                 }
             }
         }
-        swap(first->val, second->val);
+        if(first_node && second_node) {
+            int tmp = first_node->val;
+            first_node->val = second_node->val;
+            second_node->val = tmp;
+        }
     }
 };
