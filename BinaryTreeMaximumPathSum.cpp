@@ -9,23 +9,25 @@
  */
 class Solution {
 public:
-    int maxPathSum(TreeNode *root) {
-        max_sum = INT_MIN;
-        dfs(root);
-        return max_sum;
-    }
+     int maxPathSum(TreeNode *root) {  
+         int res = INT_MIN;
+         int cur_max = get_max(root, res);
+         return max(res, cur_max);
+     }
 private:
-    int max_sum;
-    int dfs(TreeNode *root)
-    {
-        if(root == NULL)
-            return 0;
-        int l = dfs(root->left);
-        int r = dfs(root->right);
-        int sum = root->val;
-        if(l > 0)   sum += l;
-        if(r > 0)   sum += r;
-        max_sum = max(max_sum, sum);
-        return max(root->val, max(root->val + l, root->val + r)); //ÕâÀïÒª¸ø¸¸½áµãÌá¹©Ò»¸ö"Á¬½Ó" ,ËùÒÔÖ»¿ÉÄÜÑ¡×ó×ÓÊ÷+root»òÕßÓÒ×ÓÊ÷+root»òÕßÖ»ÓÐroot£¬¶ø²»ÄÓ¦¸ÃÐÎ³ÉÒ»¸öÍêÕûµÄÂ·¾¶ 
-    }
+     int get_max(TreeNode *root, int &res)
+     {
+         if(!root)
+             return 0;
+         int left_max = get_max(root->left, res);
+         int right_max = get_max(root->right, res);
+         int cur = root->val;
+         if(left_max > 0)
+             cur += left_max;
+         if(right_max > 0)
+             cur += right_max;
+         res = max(cur, res);
+
+         return max(root->val, max(left_max, right_max) + root->val);
+     }
 };
