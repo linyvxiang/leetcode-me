@@ -1,14 +1,17 @@
 class Solution {
 public:
     int numTrees(int n) {
-       vector<int> res(n + 1, 0);
-       res[0] = 1;
-       res[1] = 1;
-       int i, j;
-       for(i = 2; i <= n; i++)
-            for(j = 1; j <= i; j++)
-                res[i] += res[j - 1] * res[i - j];
-       return res[n];
-       
+        if(n == 0)
+            return 1;
+        if(n == 1)
+            return 1;
+        if(n == 2)
+            return 2;
+        if(n == 3)
+            return 5;
+        int i, sum = 0;
+        for(i = 0; i <= n - 1; i++)
+            sum += numTrees(i) * numTrees(n - 1 - i);
+        return sum;
     }
 };
