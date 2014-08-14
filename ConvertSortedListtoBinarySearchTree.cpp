@@ -6,39 +6,33 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
-/**
- * Definition for binary tree
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
 class Solution {
 public:
-    TreeNode *create_bst_tree(int start, int end, ListNode* &list)
+    TreeNode* sortedListToBST (ListNode* head) {
+        if(!head)
+            return NULL;
+        ListNode *p = head;
+        int len = 0;
+        while(p)
+        {
+             len++;
+             p = p->next;
+        }
+        return create_tree(head, 0, len - 1);
+    }
+private:
+    TreeNode *create_tree(ListNode* &list, int start, int end)
     {
         if(start > end)
             return NULL;
-        int mid = start + (end - start) / 2;
-        TreeNode *left_child = create_bst_tree(start, mid - 1, list);
-        TreeNode *parent = new TreeNode(list->val);
-        parent->left = left_child;
+        int mid = (start + end) / 2;
+        TreeNode *left = create_tree(list, start, mid - 1);
+        TreeNode *root = (TreeNode *)malloc(sizeof(struct TreeNode));
+        memset(root, 0, sizeof(struct TreeNode));
+        root->left = left;
+        root->val = list->val;
         list = list->next;
-        parent->right = create_bst_tree(mid + 1, end, list);
-        return parent;
-    }
-    TreeNode *sortedListToBST(ListNode *head) {
-        if(!head)
-            return NULL;
-        ListNode *cur = head;
-        int len = 0;
-        while(cur) {
-            len++;
-            cur = cur->next;
-        }
-        
-        return create_bst_tree(0, len - 1, head);
+        root->right = create_tree(list, mid + 1, end);
+        return root;
     }
 };
