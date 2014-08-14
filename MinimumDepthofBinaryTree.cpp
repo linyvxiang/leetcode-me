@@ -7,18 +7,36 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
 class Solution {
 public:
-    int minDepth(TreeNode *root) {
+    int minDepth(const TreeNode *root) {
         if(!root)
             return 0;
-        if(!root->left && !root->right)
-            return 1;
-        int l_height = INT_MAX, r_height = INT_MAX;
+        int min_depth = INT_MAX;
+        tree_depth(root, 0, min_depth);
+        return min_depth;
+    }
+private:
+    void tree_depth(const TreeNode *root, int cur_depth, int &min_depth)
+    {
+        cur_depth++;
+        if(!root->left && !root->right) {
+            if(cur_depth < min_depth)
+                min_depth = cur_depth;
+            return ;
+        }
         if(root->left)
-            l_height = 1 + minDepth(root->left);
+            tree_depth(root->left, cur_depth, min_depth);
         if(root->right)
-            r_height = 1 + minDepth(root->right);
-        return min(l_height, r_height);
+            tree_depth(root->right, cur_depth, min_depth);
     }
 };
