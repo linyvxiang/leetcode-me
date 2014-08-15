@@ -9,36 +9,35 @@
 class Solution {
 public:
     ListNode *mergeKLists(vector<ListNode *> &lists) {
-        return do_merge_k_lists(0, lists.size() - 1, lists);
+        return merge_lists(lists, 0, lists.size() - 1);
     }
 private:
-    ListNode *merge_two_lists(ListNode *l1, ListNode *l2)
+    ListNode *merge_lists(vector<ListNode *> &lists, int start_pos, int end_pos)
     {
-        ListNode HEAD(0);
-        ListNode *cur = &HEAD;
-        while(l1 && l2) {
-            if(l1->val < l2->val) {
-                cur->next = l1;
-                l1 = l1->next;
-            } else {
-                cur->next = l2;
-                l2 = l2->next;
-            }
-            cur = cur->next;
-        }
-        ListNode *p = l1 ? l1 : l2;
-        cur->next = p;
-        return HEAD.next;
-    }
-    ListNode *do_merge_k_lists(int start, int end, vector<ListNode *> &lists)
-    {
-        if(start > end)
+        if(start_pos > end_pos)
             return NULL;
-        if(start == end)
-            return lists[start];
-        int mid = (start + end) >> 1;
-        ListNode *l1 = do_merge_k_lists(start, mid, lists);
-        ListNode *l2 = do_merge_k_lists(mid + 1, end, lists);
-        return merge_two_lists(l1, l2);
+        if(start_pos == end_pos)
+            return lists[start_pos];
+        int mid = (start_pos + end_pos) >> 1;
+        ListNode *left_list = merge_lists(lists, start_pos, mid);
+        ListNode *right_list = merge_lists(lists, mid + 1, end_pos);
+        return do_merge(left_list, right_list); 
+    }
+    ListNode *do_merge(ListNode *left, ListNode *right)
+    {
+        ListNode HEAD(0), *tail = &HEAD;
+        while(left && right){
+            if(left->val < right->val) {
+                tail->next = left;
+                left = left->next;
+            } else {
+                tail->next = right;
+                right = right->next;
+            }
+            tail = tail->next;
+            tail->next = NULL;
+        }
+        tail->next = left ? left : right;
+        return HEAD.next;
     }
 };
