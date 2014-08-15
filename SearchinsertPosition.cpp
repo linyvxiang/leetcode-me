@@ -1,23 +1,18 @@
 class Solution {
 public:
     int searchInsert(int A[], int n, int target) {
-        // IMPORTANT: Please reset any member data you declared, as
-        // the same Solution instance will be reused for each test case.
-        int low = 0, high = n -1;
-        int mid, cur_num;
-        while(low <= high && low < n && high >= 0) {
-            mid = (low + high) >> 1;
-            cur_num = A[mid];
-            if(cur_num == target)
+        int res = -1;
+        int start = 0, end = n - 1;
+        while(start <= end) {
+            int mid = (start + end) >> 1;
+            if(A[mid] == target)
                 return mid;
-            if(cur_num < target)
-                low = mid + 1;
-            else
-                high = mid - 1;
+            if(A[mid] > target) {
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
         }
-        if(A[mid] < target)
-            return low;
-        else
-            return high + 1;
+        return start;
     }
 };
