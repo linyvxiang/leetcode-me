@@ -9,31 +9,24 @@
 class Solution {
 public:
     ListNode *insertionSortList(ListNode *head) {
-        ListNode HEAD(0);
-        HEAD.next = head;
-        if(!head || !head->next)
-            return head;
-        ListNode *pre = &HEAD;
-        ListNode *cur = head->next;
-        ListNode *cur_prev = head;
+        ListNode RES_HEAD(0), *cur = head;
         while(cur) {
-            ListNode *new_pos = HEAD.next;
-            pre = &HEAD;
-            while(new_pos != cur && new_pos->val < cur->val) {
-                pre = new_pos;
-                new_pos = new_pos->next;
+            ListNode *tmp = cur->next, *pre = &RES_HEAD;
+            cur->next = NULL;
+            while(pre) {
+                if(!pre->next) {
+                    pre->next = cur;
+                    break;
+                } else if(pre->next->val > cur->val) {
+                    cur->next = pre->next;
+                    pre->next = cur;
+                    break;
+                } else {
+                    pre = pre->next;
+                }
             }
-            if(new_pos == cur) {
-                cur_prev = cur;
-                cur= cur->next;
-                continue;
-            }
-             // insert between pre and new_pos
-            cur_prev->next = cur->next;
-            cur->next = pre->next;
-            pre->next = cur;
-            cur = cur_prev->next;
+            cur = tmp;
         }
-        return HEAD.next;
+        return RES_HEAD.next;
     }
 };
