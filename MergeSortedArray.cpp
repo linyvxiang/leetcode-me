@@ -1,28 +1,22 @@
 class Solution {
 public:
     void merge(int A[], int m, int B[], int n) {
-        int cur_end_all = m + n - 1, cur_a = m - 1, cur_b = n - 1;
-        while(cur_end_all >= 0) {
-            if(cur_a >= 0 && cur_b >= 0) {
-                if(A[cur_a] > B[cur_b]) { //move A[cur_a] to the final pos
-                    A[cur_end_all] = A[cur_a];
-                    cur_a--;
-                    cur_end_all--;
-                } else {
-                    A[cur_end_all] = B[cur_b];
-                    cur_b--;
-                    cur_end_all--;
-                }
+        int fin_pos = m + n - 1;
+        int pos_a = m - 1, pos_b = n - 1;
+        while(pos_a >= 0 && pos_b >= 0) {
+            if(A[pos_a] > B[pos_b]) {
+                A[fin_pos--] = A[pos_a--];
             } else {
-                if(cur_a >= 0) {
-                    A[cur_end_all] = A[cur_a];
-                    cur_a--;
-                    cur_end_all--;
-                } else {
-                    A[cur_end_all] = B[cur_b];
-                    cur_b--;
-                    cur_end_all--;
-                }
+                A[fin_pos--] = B[pos_b--];
+            }
+        }
+        if(pos_a >= 0) {
+            while(pos_a >= 0) {
+                A[fin_pos--] = A[pos_a--];
+            }
+        } else {
+            while(pos_b >= 0) {
+                A[fin_pos--] = B[pos_b--];
             }
         }
     }
