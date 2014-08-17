@@ -2,23 +2,27 @@ class Solution {
 public:
     vector<vector<int> > combine(int n, int k) {
         vector<vector<int> > res;
-        vector<int> tmp;
-        generate_combines(1, 0, n, k, tmp, res);
+        vector<int> tmp_res;
+
+        if(!k)
+            return res;
+        do_generate_combine(n, k, 0, 1, res, tmp_res);
         return res;
     }
 private:
-    void generate_combines(int cur_pos, int numbers, int n, int k,
-                            vector<int> &tmp, vector<vector<int> > &res)
-    {
-
-        if(numbers == k) {
-            res.push_back(tmp);
+    void do_generate_combine(int n, int k, int cur_len, int cur_pos,
+                                vector<vector<int> > &res,
+                                vector<int> &tmp_res)
+  {
+        if(cur_len == k) {
+            res.push_back(tmp_res);
+            return ;
         }
-        int start = cur_pos;
-        for(start = cur_pos; start <= n; start++) {
-            tmp.push_back(start);
-            generate_combines(start + 1, numbers + 1, n, k, tmp, res);
-            tmp.pop_back();
-        }
-    }    
+        if(cur_pos > n)
+            return ;
+        tmp_res.push_back(cur_pos);
+        do_generate_combine(n, k, cur_len + 1, cur_pos + 1, res, tmp_res);
+        tmp_res.pop_back();
+        do_generate_combine(n, k, cur_len, cur_pos + 1, res, tmp_res);
+    }
 };
