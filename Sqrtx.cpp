@@ -1,22 +1,18 @@
 class Solution {
 public:
     int sqrt(int x) {
-        int left = 1, right = x / 2;
-        int mid, last_mid;
         if(x < 2)
             return x;
-            
-        while(left <= right) {
-            mid = (left + right) >> 1;
-            if(x / mid > mid) {
-                left = mid + 1;
-                last_mid = mid;
-            } else if(x / mid < mid) {
-                right = mid - 1;
-            } else {
+        int low = 1, high = x / 2;
+        while(low <= high) {
+            int mid = (low + high) >> 1;
+            if(x / mid == mid)
                 return mid;
-            }
+            if(x / mid > mid)
+                low = mid + 1;
+            else
+                high = mid - 1;
         }
-        return last_mid;
+        return high;
     }
 };
