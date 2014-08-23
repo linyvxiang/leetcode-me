@@ -7,7 +7,7 @@
  *     Point(int a, int b) : x(a), y(b) {}
  * };
  */
- class Solution {
+class Solution {
 public:
     int maxPoints(vector<Point> &points) {
         if(points.empty())
