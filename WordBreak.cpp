@@ -1,17 +1,16 @@
 class Solution {
 public:
     bool wordBreak(string s, unordered_set<string> &dict) {
-
-        vector<bool> f(s.size() + 1, false);
-        f[0] = true; 
-        for (int i = 1; i <= s.size(); ++i) {
-            for (int j = i - 1; j >= 0; --j) {
-                if (f[j] && dict.find(s.substr(j, i - j)) != dict.end()) {
-                    f[i] = true;
+        vector<bool> res(s.size() + 1, false);
+        int i, j;
+        res[0] = true;
+        for(i = 1; i <= s.size(); i++)
+            for(j = i - 1; j >= 0; j--) {
+                if(res[j] && dict.find(s.substr(j , i - j)) != dict.end()) {
+                    res[i] = true;
                     break;
                 }
             }
-        }
-        return f[s.size()];
+        return res[s.size()];
     }
 };
