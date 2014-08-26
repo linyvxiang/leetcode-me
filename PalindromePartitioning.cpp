@@ -2,52 +2,39 @@ class Solution {
 public:
     vector<vector<string> > partition(string s) {
         vector<vector<string> > res;
-        vector<vector<string> > prev;
-        vector<string> tp;
-        string ss;
-        ss += s[0];
-        tp.push_back(ss);
-        prev.push_back(tp);
-        int i, j, k, start;
-        for(i = 1; i < s.size(); i++) {
-            for(j = 0; j < prev.size(); j++) {
-                for(k = 0; k < prev[j].size(); k++) {
-                    string t = "";
-                    for(start = k; start < prev[j].size(); start++) {
-                        t += prev[j][start];
-                    }
-                    t += s[i];
-                    int m;
-                    vector<string> next;
-                    if(check(t)) {
-                        for(m = 0; m < k; m++) {
-                            next.push_back(prev[j][m]);
-                        }
-                        next.push_back(t);
-                        res.push_back(next);
-                    }
-            }
-                vector<string> tt = prev[j];
-                string ttt = "";
-                ttt += s[i];
-                tt.push_back(ttt);
-                res.push_back(tt);
-            }
-       
-            prev = res;
-            res.clear();
-        }
-        return prev;
+        if(s.size() == 0)
+            return res;
+        vector<string> tmp_res;
+        do_partition(s, 0, res, tmp_res);
+        return res;
     }
 private:
-    bool check(string s)
+    void do_partition(string &s, int cur_pos,
+                        vector<vector<string> >  &res, vector<string> &tmp_res)
     {
-        if(s.size() == 1)
-            return true;
-        int start = 0, end = s.size() - 1;
-        while(start <= end)
-            if(s[start++] != s[end--])
+        if(cur_pos == s.size()) {
+            if(!tmp_res.empty())
+                res.push_back(tmp_res);
+            return ;
+        }
+        int start;
+        string cur = "";
+        for(start = cur_pos; start < s.size(); start++) {
+            cur += s[start];
+            if(check(cur)) {
+                tmp_res.push_back(cur);
+                do_partition(s, start + 1, res, tmp_res);
+                tmp_res.pop_back();
+            }
+        }
+    }
+    bool check(string &str)
+    {
+        int start = 0, end = str.size() - 1;
+        while(start <= end) {
+            if(str[start++] != str[end--])
                 return false;
+        }
         return true;
     }
 };
