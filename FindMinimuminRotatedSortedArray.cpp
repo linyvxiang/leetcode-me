@@ -16,7 +16,7 @@ class Solution {
 				return num[mid];
 
 			if(num[mid - 1] < num[mid] && num[mid] > num[mid + 1])
-				return do_find_min(num, mid + 1, end);
+				return num[mid + 1];
 			if(num[mid - 1] < num[mid] && num[mid] < num[mid + 1]) 
 				return min(do_find_min(num, start, mid - 1),
 				            do_find_min(num, mid + 1, end));
