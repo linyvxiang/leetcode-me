@@ -12,7 +12,7 @@ class LRUCache{
 		}
 
 		int get(int key) {
-			__gnu_cxx::hash_map<int, Pair_it>::iterator map_it = lru_map_.find(key);
+			std::map<int, Pair_it>::iterator map_it = lru_map_.find(key);
 			int ret = -1;
 			if(map_it != lru_map_.end()) {
 				//found
@@ -27,7 +27,15 @@ class LRUCache{
 		}
 
 		void set(int key, int value) {
-			if(cur_size_ == size_) {
+			std::map<int, Pair_it>::iterator map_it = lru_map_.find(key);
+			if(map_it != lru_map_.end()) {
+				//update
+				Pair_it pair_it = map_it->second;
+				pair_it->second = value;
+				data_.splice(data_.begin(), data_, pair_it);
+				lru_map_.erase(key);
+				lru_map_.insert(std::make_pair(key, data_.begin()));
+			} else if(cur_size_ == size_) {
 				//already full
 				Pair_it pair_it = data_.end();
 				pair_it--;
@@ -47,17 +55,7 @@ class LRUCache{
 		}
 	private:
 		std::list<std::pair<int, int> > data_;
-		__gnu_cxx::hash_map<int, Pair_it> lru_map_;
+		std::map<int, Pair_it> lru_map_;
 		int size_;
 		int cur_size_;
 };
-
-int main()
-{
-	__gnu_cxx::hash_map<int, int> hash_map;
-	hash_map[10] = 2;
-	LRUCache cache(2048);
-	cache.set(1, 2);	
-	std::cout << cache.get(1) << std::endl;
-	return 0;
-}
