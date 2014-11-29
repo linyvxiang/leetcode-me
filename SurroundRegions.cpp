@@ -1,9 +1,3 @@
-#include <iostream>
-#include <vector>
-#include <stdlib.h>
-#include <string.h>
-#include <queue>
-using namespace std;
 class Solution {
 public:
     void solve(vector<vector<char> > &board) {
@@ -72,49 +66,3 @@ private:
 
 	}
 };
-
-int main()
-{
-	vector<char> row_1;
-	vector<vector<char> > m;
-	row_1.push_back('X');
-	row_1.push_back('O');
-	row_1.push_back('X');
-	row_1.push_back('O');
-	row_1.push_back('X');
-	row_1.push_back('O');
-	m.push_back(row_1);
-	vector<char> row_2;
-	row_2.push_back('O');
-	row_2.push_back('X');
-	row_2.push_back('O');
-	row_2.push_back('X');
-	row_2.push_back('O');
-	row_2.push_back('X');
-	m.push_back(row_2);
-	vector<char> row_3;
-	row_3.push_back('X');
-	row_3.push_back('O');
-	row_3.push_back('X');
-	row_3.push_back('O');
-	row_3.push_back('X');
-	row_3.push_back('O');
-	m.push_back(row_3);
-	vector<char> row_4;
-	row_4.push_back('O');
-	row_4.push_back('X');
-	row_4.push_back('O');
-	row_4.push_back('X');
-	row_4.push_back('O');
-	row_4.push_back('X');
-	m.push_back(row_4);
-	Solution s;
-	s.solve(m);
-	int i, j;
-	for(i = 0; i < m.size(); i++) {
-		for(j = 0; j < m[i].size(); j++)
-			cout << m[i][j];
-		cout << endl;
-	}
-	return 0;
-}
