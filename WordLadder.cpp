@@ -1,13 +1,3 @@
-#include <unordered_set>
-#include <iostream>
-#include <map>
-#include <stdio.h>
-#include <vector>
-#include <queue>
-#include <string>
-#include <set>
-#include <iterator>
-using namespace std;
 class Solution {
 public:
 	int ladderLength(string start, string end,
@@ -63,30 +53,3 @@ public:
 		return 0;
 	}
 };
-
-
-int main()
-{
-	string start = "hit";
-	string end = "cog";
-	unordered_set<string> dict;
-	dict.insert("hot");
-	dict.insert("cog");
-	dict.insert("dog");
-	dict.insert("tot");
-	dict.insert("hog");
-	dict.insert("hop");
-	dict.insert("pot");
-	dict.insert("dot");
-	/*
-	string start = "a";
-	string end = "c";
-	unordered_set<string> dict;
-	dict.insert("a");
-	dict.insert("b");
-	dict.insert("c");
-	*/
-	Solution s;
-	cout << s.ladderLength(start, end, dict) << endl;
-	return 0;
-}
