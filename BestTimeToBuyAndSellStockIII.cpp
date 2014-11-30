@@ -3,10 +3,7 @@ public:
     int maxProfit(vector<int> &prices) {
 		if(prices.empty() || prices.size() == 1)
 			return 0;
-		if(prices.size() == 2)
-			return prices[1] > prices[0] ?
-						prices[1] - prices[0] : 0;
-		
+
 		vector<int> left(prices.size());
 		vector<int> right(prices.size());
 		int i, v;
