@@ -1,9 +1,3 @@
-#include <string.h>
-#include <stdlib.h>
-#include <string>
-#include <iostream>
-using namespace std;
-
 class Solution {
 	public:
 		int numDistinct(string S, string T) {
@@ -30,13 +24,3 @@ class Solution {
 			return ret[T.size() - 1][S.size() - 1];
 		}
 };
-
-int main()
-{
-	Solution s;
-	string S = "ddd";
-	string T = "dd";
-	int ret = s.numDistinct(S, T);
-	cout << ret << endl;
-	return 0;
-}
