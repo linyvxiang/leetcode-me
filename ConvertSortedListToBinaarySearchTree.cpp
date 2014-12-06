@@ -1,18 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <iostream>
-using namespace std;
-
-struct ListNode {
-	int val;
-	ListNode *next;
-};
-struct TreeNode {
-	int val;
-	TreeNode *left;
-	TreeNode *right;
-};
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -71,34 +56,3 @@ private:
 	   }
    }
 };
-void pre_traversal(TreeNode *root)
-{
-	if(root) {
-		cout << root->val << endl;
-		pre_traversal(root->left);
-		pre_traversal(root->right);
-	}
-}
-int main()
-{
-	ListNode *head = NULL;
-	ListNode *tail = head;
-	int n = 5;
-	while(n--) {
-		ListNode *new_node = (ListNode *)malloc(sizeof(struct ListNode));
-		new_node->val = 5 - n;
-		new_node->next = NULL;
-		if(!tail) {
-			head = new_node;
-			tail = new_node;
-		} else {
-			tail->next = new_node;
-			tail = tail->next;
-		}
-	}
-	Solution s;
-	TreeNode *root = s.sortedListToBST(head);
-	TreeNode *p = root;
-	pre_traversal(p);
-	return 0;
-}
