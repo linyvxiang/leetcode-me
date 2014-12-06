@@ -1,13 +1,3 @@
-#include <stdlib.h>
-#include <string.h>
-#include <vector>
-#include <stdio.h>
-using namespace std;
-struct TreeNode {
-	int val;
-	TreeNode *left;
-	TreeNode *right;
-};
 /**
  * Definition for binary tree
  * struct TreeNode {
@@ -57,9 +47,3 @@ private:
 		return root;
 	}
 };
-
-int main()
-{
-	printf("Hello world\n");
-	return 0;
-}
