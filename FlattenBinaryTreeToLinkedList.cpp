@@ -8,28 +8,26 @@
  * };
  */
 class Solution {
-public:
-   void do_flatten(TreeNode *root, TreeNode **prev)
-   {
-        if(!root)
-            return ;
-        TreeNode *left = root->left;
-        TreeNode *right = root->right;
-        if(!(*prev))
-            *prev = root;
-        else {
-            (*prev)->right = root;
-            (*prev)->left = NULL;
-            *prev = root;
-        }
-        do_flatten(left, prev);
-        do_flatten(right, prev);
-        
-   }
-    void flatten(TreeNode *root) {
-        TreeNode *prev = NULL;
-        if(!root)
-            return;
-        do_flatten(root, &prev);
-    }
+	public:
+		void flatten(TreeNode *root) {
+			if(!root)
+				return ;
+			TreeNode *pre_node = NULL;
+			do_flatten(root, &pre_node);
+		}
+	private:
+		void do_flatten(TreeNode *cur_node, TreeNode **pre_node)
+		{
+			if(!cur_node)
+				return ;
+			if(*pre_node) {
+				(*pre_node)->left = NULL;
+				(*pre_node)->right = cur_node;
+			}
+			*pre_node = cur_node;
+			TreeNode *left = cur_node->left;
+			TreeNode *right = cur_node->right;
+			do_flatten(left, pre_node);
+			do_flatten(right, pre_node);
+		}
 };

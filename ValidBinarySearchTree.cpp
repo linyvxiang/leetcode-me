@@ -9,18 +9,17 @@
  */
 class Solution {
 public:
-    bool isValidBST(TreeNode *root)
-    {
-        return do_judge(root, INT_MIN, INT_MAX);
+    bool isValidBST(TreeNode *root) {
+		return judge_valid_bst(root, (long long)INT_MIN - 1, (long long)INT_MAX + 1);
     }
 private:
-    bool do_judge(TreeNode *root, int left_bound, int right_bound)
-    {
-        if(!root)
-            return true;
-        if(root->val <= left_bound || root->val >= right_bound)
-            return false;
-        return do_judge(root->left, left_bound, root->val)
-                && do_judge(root->right, root->val, right_bound);
-    }
+	bool judge_valid_bst(TreeNode *root, long long min_val, long long max_val)
+	{
+		if(!root)
+			return true;
+		if(root->val <= min_val || root->val >= max_val)
+		    return false;
+		return judge_valid_bst(root->left, min_val, root->val)
+					&& judge_valid_bst(root->right, root->val, max_val);
+	}
 };

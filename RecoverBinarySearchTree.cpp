@@ -10,45 +10,50 @@
 class Solution {
 public:
     void recoverTree(TreeNode *root) {
-        TreeNode *cur = root, *first_node = NULL, *second_node = NULL, *pre = NULL;
-        while(cur) {
-            if(!cur->left) {
-                if(pre && pre->val > cur->val) {
-                    if(!first_node) {
-                        first_node = pre;
-                        second_node = cur;
-                    } else {
-                        second_node = cur;
-                    }
-                }
-                pre = cur;
-                cur = cur->right;
-            } else {
-                TreeNode *pre_node = cur->left;
-                while(pre_node->right && pre_node->right != cur)
-                    pre_node = pre_node->right;
-                if(pre_node->right == NULL) {
-                    pre_node->right = cur;
-                    cur = cur->left;
-                } else {
-                    pre_node->right = NULL;
-                    if(pre && pre->val > cur->val) {
-                        if(!first_node) {
-                            first_node = pre;
-                            second_node = cur;
-                        } else {
-                            second_node = cur;
-                        }
-                    }
-                    pre = cur;
-                    cur = cur->right;
-                }
-            }
-        }
-        if(first_node && second_node) {
-            int tmp = first_node->val;
-            first_node->val = second_node->val;
-            second_node->val = tmp;
-        }
-    }
+		do_recover_tree(root);
+	}
+private:
+	void do_recover_tree(TreeNode *root)
+	{
+		if(!root)
+			return ;
+		TreeNode *pre = NULL, *cur = root, *first = NULL, *second = NULL;
+		while(cur) {
+			if(!cur->left) {
+				//visit cur;
+				if(pre && pre->val > cur->val) {
+					if(!first) {
+						first = pre;
+						second = cur;
+					} else {
+						second = cur;
+					}
+				}
+				pre = cur;
+				cur = cur->right;
+			} else {
+				TreeNode *tmp = cur->left;
+				while(tmp->right && tmp->right != cur)
+					tmp = tmp->right;
+				if(!tmp->right) {
+					tmp->right = cur;
+					cur = cur->left;
+				} else {
+					tmp->right = NULL;
+					//visit cur
+					if(pre && pre->val > cur->val) {
+						if(!first) {
+							first = pre;
+							second = cur;
+						} else {
+							second = cur;
+						}
+					}
+					pre = cur;
+					cur = cur->right;
+				}
+			}
+		}
+		swap(first->val, second->val);
+	}
 };

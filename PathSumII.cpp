@@ -9,28 +9,29 @@
  */
 class Solution {
 public:
-    vector<vector<int> > pathSum(TreeNode *root, int sum) {
-        vector<vector<int> > res;
-        vector<int> tmp_res;
-        if(!root)
-            return res;
-        do_judge_path(root, 0, sum, res, tmp_res);
-        return res;
-    }
+   vector<vector<int> > pathSum(TreeNode *root, int sum) {
+	   vector<vector<int> > ret;
+	   vector<int> tmp_ret;
+	   if(!root)
+		   return ret;
+	   get_path_sum(root, 0, sum, tmp_ret, ret);
+	   return ret;
+   }
 private:
-    void do_judge_path(TreeNode *root, int cur_sum, int target_sum, 
-                        vector<vector<int> > &res, vector<int> &tmp_res)
-    {
-        cur_sum += root->val;
-        tmp_res.push_back(root->val);
-        if(!root->left && !root->right) {
-            if(cur_sum == target_sum)
-                res.push_back(tmp_res);
-        }
-        if(root->left)
-            do_judge_path(root->left, cur_sum, target_sum, res, tmp_res);
-        if(root->right)
-            do_judge_path(root->right, cur_sum, target_sum, res, tmp_res);
-        tmp_res.pop_back();
-    }
+   void get_path_sum(TreeNode *root, int cur_sum, int sum, 
+		   				vector<int> &tmp_ret, vector<vector<int> > &ret)
+   {
+	   cur_sum += root->val;
+	   tmp_ret.push_back(root->val);
+	   if(!root->left && !root->right) {
+		   if(cur_sum == sum)
+			   ret.push_back(tmp_ret);
+	   }
+	   if(root->left)
+		   get_path_sum(root->left, cur_sum, sum, tmp_ret, ret);
+	   if(root->right)
+		   get_path_sum(root->right, cur_sum, sum, tmp_ret, ret);
+	   tmp_ret.pop_back();
+		
+   }
 };

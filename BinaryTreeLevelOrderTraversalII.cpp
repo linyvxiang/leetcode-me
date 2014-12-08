@@ -7,38 +7,38 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
 class Solution {
 public:
     vector<vector<int> > levelOrderBottom(TreeNode *root) {
-        vector<vector<int>> res;
-        if(!root)
-            return res;
-        int cur_count = 1, next_count = 0;
-        queue<TreeNode *> Q;
-        vector<int> tmp_res;
-        Q.push(root);
-        while(!Q.empty()) {
-            TreeNode *tmp = Q.front();
-            Q.pop();
-            cur_count--;
-            tmp_res.push_back(tmp->val);
-            if(tmp->left) {
-                Q.push(tmp->left);
-                next_count++;
-            }
-            if(tmp->right) {
-                Q.push(tmp->right);
-                next_count++;
-            }
-            if(cur_count == 0) {
-                res.push_back(tmp_res);
-                tmp_res.clear();
-                cur_count = next_count;
-                next_count = 0;
-            }
-        }
-        std::reverse(res.begin(), res.end());
-        return res;
-        
+		vector<vector<int> > ret;
+		vector<int> tmp_ret;
+		if(!root)
+			return ret;
+		queue<TreeNode *> Q;
+		Q.push(root);
+		int cur_level_count = 1, next_level_count = 0;
+		while(!Q.empty()) {
+			TreeNode *cur_node = Q.front();
+			Q.pop();
+			tmp_ret.push_back(cur_node->val);
+			if(cur_node->left) {
+				Q.push(cur_node->left);
+				next_level_count++;
+			}
+			if(cur_node->right) {
+				Q.push(cur_node->right);
+				next_level_count++;
+			}
+			cur_level_count--;
+			if(cur_level_count == 0) {
+				ret.push_back(tmp_ret);
+				tmp_ret.clear();
+				cur_level_count = next_level_count;
+				next_level_count = 0;
+			}
+		}
+		reverse(ret.begin(), ret.end());
+		return ret;
     }
 };

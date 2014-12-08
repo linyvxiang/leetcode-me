@@ -1,46 +1,55 @@
 class Solution {
 public:
-    int ladderLength(string start, string end, unordered_set<string> &dict) {
-        int cur_steps = 0, cur_num = 1, res = -1, next_num = 0;
-        queue<string> Q;
-        unordered_set<string>::iterator it;
-        unordered_set<string> visited;
-        Q.push(start);
-        while(!Q.empty()) {
-            string tmp = Q.front();
-            Q.pop();
-            if(judge_string(tmp, end)) {
-                res = (cur_num == 0 ? cur_steps + 1 : cur_steps) + 2;
-                break;
-            }
-            for(it = dict.begin(); it != dict.end(); it++) {
-                if(visited.find(*it) == dict.end() && judge_string(tmp, (string)(*it))) {
-                    Q.push(*it);
-                    visited.insert(*it);
-                    next_num++;
-                }
-            }
-            cur_num--;
-            if(cur_num == 0) {
-                cur_num = next_num;
-                next_num = 0;
-                cur_steps++;
-            }
+	int ladderLength(string start, string end,
+		const unordered_set<string> &dict) {
+		queue<string> Q;
+		map<string, bool> used;
+		unordered_set<string>::const_iterator it = dict.begin();
+		while(it != dict.end()) {
+			used[*it] = false;
+			it++;
+		}
+		int cur_level = 1, cur_level_count = 1, next_level_count = 0;
+		Q.push(start);
+		used[start] = true;
 
-        }
-        return res;
-    }
-private:
-    int judge_string(string &src, string dst)
-    {
-        int i, count = 0;
-        for(i = 0; i < src.size(); i++) {
-            if(src[i] != dst[i]) {
-                count++;
-                if(count > 1)
-                    break;
-            }
-        }
-        return count == 1;
-    }
+		while(!Q.empty()) {
+			string str = Q.front();
+			Q.pop();
+			cur_level_count--;
+
+			int cur_pos = 0;
+			for(; cur_pos < str.size(); cur_pos++) {
+				char ch;
+				string tmp = str;
+				for(ch = 'a'; ch <= 'z'; ch++) {
+					if(ch != str[cur_pos]) {
+						tmp[cur_pos] = ch;
+						if(tmp == end) {
+							if(dict.find(start) != dict.end()) //start is in the dict
+								/*because start is int the dict, so when find the end, the value
+								 * of cur_level *already* indlue the start node, so only to plus
+								 * one to include the end node
+								 */
+						 	   return cur_level + 1;
+							else
+								return cur_level + 2;
+						}
+						if(dict.find(tmp) != dict.end() && 
+								used[tmp] == false) {
+							used[tmp] = true;
+							Q.push(tmp);
+							next_level_count++;
+						}
+					}
+				}
+			}
+			if(cur_level_count == 0) {
+				cur_level_count = next_level_count;
+				next_level_count = 0;
+				cur_level++;
+			}
+		}
+		return 0;
+	}
 };

@@ -10,21 +10,25 @@
 class Solution {
 public:
     bool hasPathSum(TreeNode *root, int sum) {
-        return check_path(root, 0);
-    }
+		bool flag = false;
+		check_path_sum(root, 0, sum, flag);
+		return flag;
+	}
 private:
-    bool check_path(TreeNode *root, int cur_sum, int target_sum)
-        if(!root)
-            return false;
-        cur_sum += root->val;
-        if(!root->left && !root->right)
-            return cur_sum == target_sum;
-        if(root->left)
-            if(check_path(root->left, cur_sum, target))
-                return true;
-        if(!root->right)
-            return false;
-        return check_path(root->right, cur_sum, target);
-    }
+	void check_path_sum(TreeNode *root, int cur_sum, 
+						int sum, bool &flag)
+	{
+		if(flag)
+			return ;
+		if(!root)
+			return ;
+		cur_sum += root->val;
+		if(!root->left && !root->right) {
+			if(cur_sum == sum)
+				flag = true;
+			return ;
+		}
+		check_path_sum(root->left, cur_sum, sum, flag);
+		check_path_sum(root->right, cur_sum, sum, flag);
+	}
 };
-

@@ -9,60 +9,58 @@
 class Solution {
 public:
     void reorderList(ListNode *head) {
-        if(!head || !head->next)
-            return ;
-        int len = get_len(head);
-        ListNode *front_end = find_mid(head, len / 2 + 1);
-        ListNode *reverse_head = front_end->next;
-        front_end->next = NULL;
-        reverse_head = reverse_list(reverse_head);
-        insert_list(head, reverse_head);
+		if(!head || !head->next)
+			return ;
+
+		int len = get_len(head);
+		ListNode *left_tail = get_pos_node(head, len / 2);
+		ListNode *right_head = left_tail->next;
+		left_tail->next = NULL;
+		right_head = reverse_list(right_head);
+		ListNode *left_head = head;
+		while(left_head) {
+			ListNode *tmp = right_head;
+			right_head = right_head->next;
+			tmp->next = left_head->next;
+			left_head->next = tmp;
+			if(tmp->next) {
+		    	left_head = tmp->next;
+			} else {
+		        tmp->next = right_head;
+		        break;
+		    }
+		}
     }
 private:
-    int get_len(ListNode *head)
-    {
-        int l = 0;
-        ListNode *cur = head;
-        while(cur) {
-            l++;
-            cur = cur->next;
-        }
-        return l;
-    }
-    ListNode *find_mid(ListNode *head, int target_pos)
-    {
-        int cur_pos = 0;
-        ListNode HEAD(0);
-        HEAD.next = head;
-        ListNode *cur = &HEAD;
-        while(cur_pos < target_pos) {
-            cur_pos++;
-            cur = cur->next;
-        }
-        return cur;
-    }
-    ListNode *reverse_list(ListNode *head)
-    {
-        ListNode HEAD(0);
-        HEAD.next = NULL;
-        ListNode *cur = head;
-        while(cur) {
-            ListNode *tmp = cur->next;
-            cur->next = HEAD.next;
-            HEAD.next = cur;
-            cur = tmp;
-        }
-        return HEAD.next;
-    }
-    void insert_list(ListNode *left, ListNode *right)
-    {
-        ListNode *left_cur = left, *right_cur = right;
-        while(right_cur) {
-            ListNode *tmp = right_cur->next;
-            right_cur->next = left_cur->next;
-            left_cur->next = right_cur;
-            left_cur = left_cur->next->next;
-            right_cur = tmp;
-        }
-    }
+	int get_len(ListNode *head)
+	{
+		int len = 0;
+		while(head) {
+			len++;
+			head = head->next;
+		}
+		
+		return len;
+	}
+	ListNode *get_pos_node(ListNode *head, int pos)
+	{
+		int cur_pos = 1;
+		while(cur_pos < pos) {
+			cur_pos++;
+			head = head->next;
+		}
+		return head;
+		
+	}
+	ListNode* reverse_list(ListNode *head)
+	{
+		ListNode HEAD(0);
+		while(head) {
+			ListNode *tmp = head;
+			head = head->next;
+			tmp->next = HEAD.next;
+			HEAD.next = tmp;
+		}
+		return HEAD.next;
+	}
 };

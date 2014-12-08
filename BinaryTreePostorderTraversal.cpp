@@ -8,21 +8,30 @@
  * };
  */
 class Solution {
-public:
-void do_postorder(TreeNode *root, vector<int> &vec) {
-    if(!root)
-        return ;
-    do_postorder(root->left, vec);
-    do_postorder(root->right, vec);
-    vec.push_back(root->val);
-}
-    vector<int> postorderTraversal(TreeNode *root) {
-        // IMPORTANT: Please reset any member data you declared, as
-        // the same Solution instance will be reused for each test case.
-        vector<int> V;
-        if(!root)
-            return V;
-        do_postorder(root, V);
-        return move(V);
-    }
+	public:
+		vector<int> postorderTraversal(TreeNode *root) {
+			vector<int> ret;
+			if(!root)
+				return ret;
+
+			stack<TreeNode *> S;
+			S.push(root);
+			TreeNode *cur_node;
+
+			while(!S.empty()) {
+				cur_node = S.top();
+				S.pop();
+				
+				ret.push_back(cur_node->val);
+
+				if(cur_node->left)
+					S.push(cur_node->left);
+				if(cur_node->right)
+					S.push(cur_node->right);
+
+			}
+			reverse(ret.begin(), ret.end());
+
+			return ret;
+	}
 };
