@@ -31,7 +31,11 @@ class Solution {
                     tail = tail->next;
                     cur_node = next_node;
                 } else {
-                    cur_node = next_node;
+                    while(cur_node != next_node) {
+                        ListNode *tmp = cur_node->next;
+                        free(cur_node);
+                        cur_node = tmp;
+                    }
                 }
             }
             tail->next = NULL;
