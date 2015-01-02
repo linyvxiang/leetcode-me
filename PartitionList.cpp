@@ -1,12 +1,3 @@
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-using namespace std;
-struct ListNode {
-	int val;
-	ListNode *next;
-	ListNode(int x) : val(x), next(NULL) {}
-};
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -42,18 +33,3 @@ public:
 		return LEFT_HEAD.next;
     }
 };
-
-
-int main()
-{
-	ListNode *head = (ListNode *)malloc(sizeof(struct ListNode));
-	head->next = NULL;
-	head->val = 1;
-	Solution s;
-	ListNode *ret = s.partition(head, 0);
-	while(ret) {
-		cout << ret->val << endl;
-		ret = ret->next;
-	}
-	return 0;
-}
