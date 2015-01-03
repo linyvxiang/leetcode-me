@@ -1,26 +1,20 @@
 class Solution {
     public:
         int removeDuplicates(int A[], int n) {
-           int cur_pos = 0, front_pos = 0, write_pos = 0;
-            while(cur_pos < n) {
-                front_pos = cur_pos;
-                while(front_pos < n &&
-                        A[front_pos] == A[cur_pos])
-                    front_pos++;
-                if(front_pos - cur_pos > 1) {
-                    A[write_pos] = A[cur_pos];
-                    A[write_pos + 1] = A[cur_pos];
-                    write_pos += 2;
-                    cur_pos = front_pos;
-                } else {
-                    int num = front_pos - cur_pos;
-                    while(num--) {
-                        A[write_pos + num] = A[cur_pos];
+            if(n == 0)
+                return 0;
+            int back = 0, front = 1, count = 1;
+            for(; front < n; front++) {
+                if(A[front] == A[back]) {
+                    if(count < 2) {
+                        count++;
+                        A[++back] = A[front];
                     }
-                    write_pos += front_pos - cur_pos;
-                    cur_pos = front_pos;
+                } else {
+                    A[++back] = A[front];
+                    count = 1;
                 }
             }
-            return write_pos;
+            return back + 1;
         }
 };
