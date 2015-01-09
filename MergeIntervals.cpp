@@ -25,7 +25,7 @@ public:
                 i++;
             } else {
                 if(intervals[i].start <= (*ret.rbegin()).end) {
-                    (*ret.rbegin()).end = max((*ret.rbegin()).end, 
+                    (*ret.rbegin()).end = max((*ret.rbegin()).end,
                                                 intervals[i].end);
                     i++;
                 } else {
