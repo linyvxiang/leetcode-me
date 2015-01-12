@@ -1,7 +1,7 @@
 class Solution {
     public:
         vector<string> anagrams(vector<string> &strs) {
-            unordered_map<string, vector<string> > umap;
+            map<string, vector<string> > umap;
             vector<string> ret;
             for(int i = 0; i < strs.size(); i++) {
                 string temp = strs[i];
