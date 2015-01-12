@@ -17,7 +17,7 @@ class Solution {
                 return ;
             if(cur_sum == target)
                 ret.push_back(cur_ret);
-            int p = cur_pos; 
+            int p = cur_pos
             while(p < num.size()) {
                 cur_ret.push_back(num[p]);
                 do_generate(num, target, cur_sum + num[p], p + 1, cur_ret, ret);
