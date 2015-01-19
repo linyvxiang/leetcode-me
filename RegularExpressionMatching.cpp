@@ -15,9 +15,7 @@ private:
         if(s[pos_s] == p[pos_p] || p[pos_p] == '.') {
             if(pos_p + 1 < len_p && p[pos_p + 1] == '*') {
                 int pos = pos_s;
-                while(pos < len_s && (s[pos] == p[pos_p] ||
-                                        (pos > pos_s && p[pos_p] == '.') ||
-                                        (pos == pos_s && p[pos_p] == '.'))) {
+                while(pos < len_s && (s[pos] == p[pos_p] || p[pos_p] == '.')) {
                     if(do_judge(s, pos + 1, len_s, p, pos_p + 2, len_p))
                         return true;
                     pos++;
