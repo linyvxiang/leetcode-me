@@ -9,10 +9,12 @@ class Solution {
                 return min(num[left], num[right]);
             }
             int mid = (left + right) / 2;
-            if (num[mid] > num[left]) {
-                return min(find_min(num, left, mid - 1), find_min(num, mid + 1, right));
+            if (num[mid] > num[mid - 1] && num[mid] > num[mid]+ 1) {
+                return num[mid + 1];
+            } else if (num[mid] < num[mid - 1] && num[mid] < num[mid + 1]) {
+                return num[mid];
             } else {
-                return find_min(num, left + 1, right);
+                return min(find_min(num, left, mid - 1), find_min(num, mid + 1, right));
             }
         }
 };
