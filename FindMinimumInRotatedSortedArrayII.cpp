@@ -1,46 +1,29 @@
 class Solution {
-	public:
-		int findMin(vector<int> &num) {
-			return do_find_min(num, 0, num.size() - 1);
-		}
-	private:
-		int do_find_min(const vector<int> &num, int start, int end)
-	   	{
-			if(start == end)
-				return num[start];
-			if(start == end - 1)
-				return num[start] < num[end] ? num[start] : num[end];
+    public:
+        int findMin(vector<int>& nums) {
+            return find_min(nums, 0, nums.size() -1);
+        }
+    private:
+        int find_min(const vector<int>& nums, int left, int right) {
+            if (left == right) {
+                return nums[left];
+            } else if (left == right - 1) {
+                return min(nums[left], nums[right]);
+            }
 
-			int mid = (start + end) >> 1;
-
-			if(num[mid] == num[mid - 1] && num[mid] == num[mid + 1]) {
-				return std::min(do_find_min(num, start, mid - 1),
-								do_find_min(num, mid + 1, end));
-			} else {
-				if(num[mid] != num[mid - 1] && num[mid] != num[mid + 1]) {
-					if(num[mid - 1] < num[mid] && num[mid] > num[mid + 1]) {
-						return num[mid + 1];
-					} else if(num[mid - 1] > num[mid] && num[mid] < num[mid + 1]) {
-						return num[mid];
-					} else if(num[mid - 1] < num[mid] && num[mid] < num[mid + 1]) {
-						return std::min(do_find_min(num, start, mid -1),
-										do_find_min(num, mid + 1, end));
-					}
-				} else if(num[mid - 1] == num[mid] && num[mid] != num[mid + 1]) {
-					if(num[mid] < num[mid + 1]) {
-						return std::min(do_find_min(num, start, mid - 1),
-										do_find_min(num, mid + 1, end));
-					} else if(num[mid] > num[mid + 1]) {
-						return num[mid + 1];
-					}
-				} else if(num[mid -1] != num[mid] && num[mid] == num[mid + 1]) {
-					if(num[mid -1] > num[mid]) {
-						return num[mid];
-					} else if(num[mid] > num[mid - 1]) {
-						return std::min(do_find_min(num, start, mid - 1),
-							   			do_find_min(num, mid + 1, end));
-					}
-				}
-			}
-		}
+            int mid = (left + right) / 2;
+            if (nums[mid] == nums[left] && nums[mid] == nums[right]) {
+                return min(find_min(nums, left, mid - 1), find_min(nums, mid + 1, right));
+            } else if (nums[mid] != nums[left] && nums[mid] != nums[right]) {
+                if (nums[mid] < nums[mid - 1] && nums[mid] < nums[mid + 1]) {
+                    return nums[mid];
+                } else if (nums[mid] > nums[mid - 1] && nums[mid] > nums[mid + 1]) {
+                    return nums[mid + 1];
+                } else {
+                    return min(find_min(nums, left, mid - 1), find_min(nums, mid + 1, right));
+                }
+            } else {
+                return min(find_min(nums, left, mid - 1), find_min(nums, mid + 1, right));
+            }
+        }
 };

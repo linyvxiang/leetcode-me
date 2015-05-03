@@ -1,40 +1,37 @@
 class MinStack {
-	public:
-		void push(int x) {
-			data_.push(x);
-			if(minimum_.empty()) {
-				minimum_.push(std::make_pair(x, 1));
-			} else if(x == minimum_.top().first) {
-				minimum_.top().second++;
-			} else if(x < minimum_.top().first) {
-				minimum_.push(std::make_pair(x, 1));
-			}
+    public:
+        void push(int x) {
+            if (_num.empty() || x < _min_num.top().num) {
+                _min_num.push(MinNum(x));
+            } else if (x == _min_num.top().num) {
+                _min_num.top().ref++;
+            }
+            _num.push(x);
+        }
 
-		}
+        void pop() {
+            if (_min_num.top().num == _num.top()) {
+                _min_num.top().ref--;
+                if (_min_num.top().ref == 0) {
+                    _min_num.pop();
+                }
+            }
+            _num.pop();
+        }
 
-		void pop() {
-			if(!data_.empty()) {
-				int top_value = data_.top();
-				if(top_value != minimum_.top().first) {
-					data_.pop();
-				} else {
-					data_.pop();
-					minimum_.top().second--;
-					if(minimum_.top().second == 0)
-						minimum_.pop();
-				}
-			}
-		}
+        int top() {
+            return _num.top();
+        }
 
-		int top() {
-			return data_.top();
-		}
-
-		int getMin() {
-			return minimum_.top().first;
-		}
-	private:
-		std::stack<int> data_;
-		std::stack<std::pair<int, int> > minimum_;
-
+        int getMin() {
+            return _min_num.top().num;
+        }
+    private:
+        struct MinNum {
+            int num;
+            int ref;
+            MinNum(int num) : num(num), ref(1) {}
+        };
+        std::stack<MinNum> _min_num;
+        std::stack<int> _num;
 };
