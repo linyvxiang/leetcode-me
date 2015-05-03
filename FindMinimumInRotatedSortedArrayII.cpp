@@ -22,8 +22,18 @@ class Solution {
                 } else {
                     return min(find_min(nums, left, mid - 1), find_min(nums, mid + 1, right));
                 }
+            } else if (nums[mid] == nums[mid - 1] && nums[mid] != nums[mid + 1]){
+                if (nums[mid] > nums[mid + 1]) {
+                    return nums[mid + 1];
+                } else {
+                    return min(find_min(nums, left, mid - 1), find_min(nums, mid + 1, right));
+                }
             } else {
-                return min(find_min(nums, left, mid - 1), find_min(nums, mid + 1, right));
+                if (nums[mid] < nums[mid - 1]) {
+                    return nums[mid];
+                } else {
+                    return min(find_min(nums, left, mid - 1), find_min(nums, mid + 1, right));
+                }
             }
         }
 };
