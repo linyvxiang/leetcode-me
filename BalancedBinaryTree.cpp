@@ -10,27 +10,27 @@
 class Solution {
 public:
     bool isBalanced(TreeNode* root) {
-        return check_balance(root);
+        return check_balance(root) >= 0;
     }
 private:
-    int tree_depth(TreeNode* root) {
+    int abs(int a) {
+        return a > 0 ? a : -a;
+    }
+    int check_balance(TreeNode* root) {
         if (!root) {
             return 0;
         }
-        return 1 + max(tree_depth(root->left), tree_depth(root->right));
-    }
-    bool check_balance(TreeNode* root) {
-        if (!root) {
-            return true;
+        int left_depth = check_balance(root->left);
+        if (left_depth < 0) {
+            return -1;
         }
-        int left_depth = tree_depth(root->left);
-        int right_depth = tree_depth(root->right);
-        if (left_depth - right_depth < -1
-                || left_depth - right_depth > 1) {
-            return false;
+        int right_depth = check_balance(root->right);
+        if (right_depth < 0) {
+            return -1;
         }
-        return check_balance(root->left)
-                && check_balance(root->right);
+        if (abs(left_depth - right_depth) > 1) {
+            return -1;
+        }
+        return 1 + max(left_depth, right_depth);
     }
-
 };
