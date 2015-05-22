@@ -10,47 +10,27 @@
 class Solution {
 public:
     vector<Interval> insert(vector<Interval>& intervals, Interval newInterval) {
-        vector<Interval> ret;
-        if (intervals.empty()) {
-            ret.push_back(newInterval);
-            return ret;
-        }
-        int i = 0;
-        bool inserted = false;
-        while (i < intervals.size()) {
-            if (ret.empty()) {
-                if (newInterval.start <= intervals[i].start) {
-                    ret.push_back(newInterval);
-                    inserted = true;
-                } else {
-                    ret.push_back(intervals[i++]);
-                }
-            } else if (!inserted && newInterval.start <= intervals[i].start) {
-                if (newInterval.start <= ret[ret.size() - 1].end) {
-                    ret[ret.size() - 1].end = max(ret[ret.size() - 1].end, newInterval.end);
-                    ret[ret.size() - 1].start = min(ret[ret.size() - 1].start, newInterval.start);
-                } else {
-                    ret.push_back(newInterval);
-                }
-                inserted = true;
+        vector<Interval>::iterator it = intervals.begin();
+        vector<Interval>::iterator del_it = intervals.begin();
+        
+        while (it != intervals.end()) {
+            if (newInterval.end < it->start) {
+                it = intervals.erase(del_it, it);
+                intervals.insert(it, newInterval);
+                return intervals;
+            } else if (newInterval.start > it->end) {
+                del_it = it + 1;
+                it++;
             } else {
-                if (intervals[i].start <= ret[ret.size() - 1].end) {
-                    ret[ret.size() - 1].end = max(intervals[i].end, ret[ret.size() - 1].end);
-                    ret[ret.size() - 1].start = min(intervals[i++].start, ret[ret.size() - 1].start);
-                } else {
-                    ret.push_back(intervals[i++]);
-                }
+                newInterval.start = min(newInterval.start, it->start);
+                newInterval.end = max(newInterval.end, it->end);
+                it++;
             }
         }
-
-        if (!inserted) {
-            if (newInterval.start <= ret[ret.size() - 1].end) {
-                ret[ret.size() - 1].end = max(newInterval.end, ret[ret.size() - 1].end);
-                ret[ret.size() - 1].start = min(newInterval.start, ret[ret.size() - 1].start);
-            } else {
-                ret.push_back(newInterval);
-            }
+        if (del_it != it) {
+            intervals.erase(del_it, it);
         }
-        return ret;
+        intervals.insert(intervals.end(), newInterval);
+        return intervals;
     }
 };
