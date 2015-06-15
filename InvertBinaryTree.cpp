@@ -10,12 +10,18 @@
 class Solution {
 public:
     TreeNode* invertTree(TreeNode* root) {
-        if (!root) {
-            return root;
+        stack<TreeNode*> S;
+        S.push(root);
+        while (!S.empty()) {
+            TreeNode* cur_node = S.top();
+            S.pop();
+            if (!cur_node) {
+                continue;
+            }
+            swap(cur_node->left, cur_node->right);
+            S.push(cur_node->left);
+            S.push(cur_node->right);
         }
-        swap(root->left, root->right);
-        invertTree(root->left);
-        invertTree(root->right);
         return root;
     }
 };
