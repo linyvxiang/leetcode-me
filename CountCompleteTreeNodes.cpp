@@ -15,7 +15,6 @@ public:
         }
         int left_height = 0;
         int right_height = 0;
-        int height = 0;
         TreeNode* left_node = root->left;
         TreeNode* right_node = root->right;
         while (left_node) {
@@ -28,8 +27,9 @@ public:
         }
         if (left_height == right_height) {
             return 1 + 2 * ((1 << left_height) - 1);
+        } else {
+            return 1 + countNodes(root->left) +
+                    countNodes(root->right);
         }
-        return 1 + countNodes(root->left) +
-                countNodes(root->right);
     }
 };
