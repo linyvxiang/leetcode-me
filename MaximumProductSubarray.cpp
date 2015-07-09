@@ -5,18 +5,23 @@ public:
             return nums[0];
         }
         int max_prod = INT_MIN;
-        int max_positive = 1;
-        int min_negative = 1;
+        int max_positive = 0;
+        int min_negative = 0;
         for (int i = 0; i < nums.size(); i++) {
-            int tmp_pos = max_positive;
-            int tmp_neg = min_negative;
-            max_positive = max(nums[i],
-                    max(0, max(nums[i] * tmp_pos, nums[i] * tmp_neg)));
-            min_negative = min(nums[i],
-                    min(0, min(nums[i] * tmp_pos, nums[i] * tmp_neg)));
+            int m = max_positive;
+            int n = min_negative;
+            if (nums[i] > 0) {
+                max_positive = max(m * nums[i], nums[i]);
+                min_negative = min(n * nums[i], 0);
+            } else if (nums[i] < 0) {
+                max_positive = max(n * nums[i], 0);
+                min_negative = min(m * nums[i], nums[i]);
+            } else {
+                max_positive = 0;
+                min_negative = 0;
+            }
             max_prod = max(max_prod, max_positive);
         }
         return max_prod;
     }
 };
-
