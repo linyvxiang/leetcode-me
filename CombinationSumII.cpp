@@ -11,12 +11,6 @@ private:
     void do_combination(int cur_sum, int cur_pos, int target, 
             vector<int>& candidates, vector<int>& cur_ret,
             vector<vector<int>>& ret) {
-        if (cur_pos == candidates.size()) {
-            if (cur_sum == target) {
-                ret.push_back(cur_ret);
-            }
-            return;
-        }
         if (cur_sum > target) {
             return;
         }
