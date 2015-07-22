@@ -10,13 +10,11 @@ public:
 private:
     void do_generate(int cur_pos, vector<int>& nums,
             vector<int>& cur_ret, vector<vector<int>>& ret) {
-        if (cur_pos == nums.size()) {
-            ret.push_back(cur_ret);
-            return;
+        ret.push_back(cur_ret);
+        for (int pos = cur_pos; pos < nums.size(); pos++) {
+            cur_ret.push_back(nums[pos]);
+            do_generate(pos + 1, nums, cur_ret, ret);
+            cur_ret.pop_back();
         }
-        cur_ret.push_back(nums[cur_pos]);
-        do_generate(cur_pos + 1, nums, cur_ret, ret);
-        cur_ret.pop_back();
-        do_generate(cur_pos + 1, nums, cur_ret, ret);
     }
 };
