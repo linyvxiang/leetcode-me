@@ -4,18 +4,19 @@ public:
         if (nums.empty()) {
             return 0;
         }
-        int start = 0;
-        int end = nums.size() - 1;
-        while (start <= end) {
-            int mid = (start + end) / 2;
-            if (nums[mid] == target) {
-                return mid;
-            } else if (nums[mid] < target) {
-                start = mid + 1;
+        int left = 0;
+        int right = nums.size() - 1;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] < target) {
+                left = mid + 1;
             } else {
-                end = mid - 1;
+                right = mid;
             }
         }
-        return start;
+        if (nums[right] < target) {
+            right++;
+        }
+        return right;
     }
 };
