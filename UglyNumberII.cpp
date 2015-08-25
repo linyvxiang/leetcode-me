@@ -1,15 +1,21 @@
 class Solution {
 public:
     int nthUglyNumber(int n) {
-        set<long long> nums;
-        nums.insert(1);
+        vector<long long> nums;
+        int id2 = 0;
+        int id3 = 0;
+        int id5 = 0;
+        int ret = 1;
         while (--n) {
-            long long cur_num = *nums.begin();
-            nums.erase(cur_num);
-            nums.insert(cur_num * 2);
-            nums.insert(cur_num * 3);
-            nums.insert(cur_num * 5);
+            nums.push_back(ret);
+            int v2 = nums[id2] * 2;
+            int v3 = nums[id3] * 3;
+            int v5 = nums[id5] * 5;
+            ret = min(v2, min(v3, v5));
+            id2 += (ret == v2);
+            id3 += (ret == v3);
+            id5 += (ret == v5);
         }
-        return *nums.begin();
+        return ret;
     }
 };
