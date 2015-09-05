@@ -6,17 +6,18 @@ public:
         }
         int left = 0;
         int right = nums.size() - 1;
-        while (left < right) {
+        while (left <= right) {
             int mid = (left + right) / 2;
-            if (nums[mid] < target) {
+            if (nums[mid] <= target) {
                 left = mid + 1;
             } else {
-                right = mid;
+                right = mid - 1;
             }
         }
-        if (nums[right] < target) {
-            right++;
+        if (right >= 0 && nums[right] == target) {
+            return right;
+        } else {
+            return left;
         }
-        return right;
     }
 };
