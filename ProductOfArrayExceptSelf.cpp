@@ -1,31 +1,16 @@
 class Solution {
 public:
     vector<int> productExceptSelf(vector<int>& nums) {
-        long long all_prod = 1;
-        bool zero_exist = false;
-        for (int i = 0; i < nums.size(); i++) {
-            if (nums[i] != 0) {
-                all_prod *= nums[i];
-            } else {
-                if (!zero_exist) {
-                    zero_exist = true;
-                } else {
-                    all_prod = 0;
-                    break;
-                }
-            }
+        vector<int> result(nums.size(), 1);
+        long long prod = 1;
+        for (int i = 0; i < nums.size() - 1; i++) {
+            prod *= nums[i];
+            result[i + 1] = prod;
         }
-        vector<int> result;
-        for (int i = 0; i < nums.size(); i++) {
-            if (zero_exist) {
-                if (nums[i] != 0) {
-                    result.push_back(0);
-                } else {
-                    result.push_back(all_prod);
-                }
-            } else {
-                result.push_back(all_prod / nums[i]);
-            }
+        prod = 1;
+        for (int i = nums.size() - 1; i > 0; i--) {
+            prod *= nums[i];
+            result[i - 1] *= prod;
         }
         return result;
     }
